@@ -298,7 +298,14 @@ class LocationTracker {
         }
 
         try {
+            console.log(`Fetching location for IP: ${ipInput}`); // Log the IP being fetched
             const response = await fetch(`https://ipapi.co/${ipInput}/json/`);
+            
+            // Check if the response is ok (status in the range 200-299)
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+
             const data = await response.json();
 
             if (data.error) {
@@ -307,6 +314,7 @@ class LocationTracker {
 
             this.displayIPLocation(data);
         } catch (error) {
+            console.error(`Error occurred: ${error.message}`); // Log the error message
             this.showError(`Failed to track IP: ${error.message}`);
         }
     }
